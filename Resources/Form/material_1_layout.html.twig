@@ -1,0 +1,260 @@
+{% use "form_div_layout.html.twig" %}
+
+{% block form_widget_simple %}
+    {%- set ng_model = form.vars.full_name|replace({'[': '.', ']': ''}) -%}
+    {%- set ng_value = value matches '/^\\d+$/' ? value : "'" ~ value|replace({"'": "\\'"}) ~ "'" -%}
+    {%- set attr = attr|merge({'ng-model': ng_model}) -%}
+    {%- set type = type|default('text') -%}
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" ng-init="{{ ng_model }}={{ ng_value }}" {% endif %}/>
+{% endblock form_widget_simple %}
+
+{%- block choice_row -%}
+    {% set ng_model = full_name|replace({'[': '.', ']': ''}) %}
+    {% if not expanded %}
+        <md-input-container class="md-block">
+    {% endif %}
+    {{- form_label(form) -}}
+    {{- form_widget(form) -}}
+    <div ng-messages="{{ ng_model }}.$error" role="alert" multiple>
+        {% if required %}
+            <div ng-message="required" class="{{ ng_model|replace('.', '-') }}-required">This field is required.</div>
+        {% endif %}
+        {{- form_errors(form) -}}
+    </div>
+    {% if not expanded %}
+        </md-input-container>
+    {% endif %}
+{%- endblock choice_row -%}
+
+{%- block choice_label -%}
+    {% if label is not same as(false) -%}
+        {% if not compound and not expanded -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {% if required -%}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {%- endif -%}
+        {% if label is empty -%}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+        {% if expanded %}
+            <h4{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</h4>
+        {% else %}
+            <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</label>
+        {% endif %}
+    {% endif %}
+{%- endblock choice_label -%}
+
+{%- block choice_widget_expanded -%}
+    {%- set ng_model = full_name|replace({'[': '.', ']': ''}) -%}
+    {% if multiple %}
+        {{ block('checkbox_group', {form: form, ng_model: ng_model}) }}
+    {% else %}
+        {{ block('radio_group', {form: form, ng_model: ng_model}) }}
+    {% endif %}
+{%- endblock choice_widget_expanded -%}
+
+{% block checkbox_group %}
+    <md-checkbox-group {{ block('widget_container_attributes') }} layout="column">
+        {%- for child in form %}
+            {{- form_widget(child, {ng_model: ng_model}) -}}
+        {% endfor -%}
+    </md-checkbox-group>
+{% endblock %}
+
+{%- block checkbox_widget -%}
+    {%- set model_name = ng_model ?: full_name|replace({'[': '.', ']': ''}) -%}
+    {%- set ng_value = value matches '/^\\d+$/' ? value : "'" ~ value|replace({"'": "\\'"}) ~ "'" -%}
+    <md-checkbox {% if ng_model is defined %}ng-checked="isChecked({{ ng_model }}, {{ ng_value }})" ng-click="{{ ng_model }} = toggleCheckbox({{ ng_model }}, {{ ng_value }})"{% else %}ng-model="{{ model_name }}" ng-click="{{ ng_model }} = {{ ng_value }}"{% endif %} {% if value is defined %} ng-yes-value="{{ value }}" {% endif %}{% if checked %} ng-init="{{ model_name }} = toggleCheckbox({{ model_name }}, {{ ng_value }})"{% endif %}>
+        <span hide>
+            <input type="checkbox" {% if ng_model is defined %}ng-checked="isChecked({{ ng_model }}, {{ ng_value }})" ng-click="{{ ng_model }} = toggleCheckbox({{ ng_model }}, {{ ng_value }})"{% else %}ng-model="{{ model_name }}"{% endif %} {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
+        </span>
+        {{- form_label(form) -}}
+    </md-checkbox>
+{%- endblock checkbox_widget -%}
+
+{% block radio_group %}
+    {%- set ng_model = full_name|replace({'[': '.', ']': ''}) -%}
+    <md-radio-group {{ block('widget_container_attributes') }} layout="column">
+        {%- for child in form %}
+            {{- form_widget(child, {form: form, ng_model: ng_model}) -}}
+        {% endfor -%}
+    </md-radio-group>
+{% endblock radio_group %}
+
+{%- block radio_widget -%}
+    {%- set ng_value = value matches '/^\\d+$/' ? value : "'" ~ value|replace({"'": "\\'"}) ~ "'" -%}
+    {%- if ng_model is not defined %}
+        {%- set ng_model = full_name|replace({'[': '.', ']': ''}) -%}
+    {% endif -%}
+    <md-radio-button type="radio" ng-checked="isRadioSelected({{ ng_model }}, {{ ng_value }})" ng-click="{{ ng_model }} = setRadio({{ ng_model }}, {{ ng_value }})" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} ng-init="{{ ng_model }} = setRadio({{ ng_model }}, {{ ng_value }})"{% endif %}>
+        <span hide>
+            <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} ng-checked="isRadioSelected({{ ng_model }}, {{ ng_value }})">
+        </span>
+        {{- form_label(form) -}}
+    </md-radio-button>
+{%- endblock radio_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- if required and placeholder is none and not placeholder_in_choices and not multiple -%}
+        {% set required = false %}
+    {%- endif -%}
+    {%- if multiple -%}
+        {%- set ng_model = full_name|replace({'[]': '', '[': '.', ']': ''}) -%}
+        {%- set ng_init = ng_model ~ "=" ~ value|json_encode -%}
+    {% else %}
+        {%- set ng_model = full_name|replace({'[]': '', '[': '.', ']': ''}) -%}
+        {%- set ng_value = value matches '/^\\d+$/' ? value : "'" ~ value|replace({"'": "\\'"}) ~ "'" -%}
+        {%- set ng_init = ng_model ~ "=" ~ ng_value -%}
+    {%- endif -%}
+
+    <select {{ block('widget_attributes') }} hide ng-model="{{ ng_model }}"{% if multiple %} multiple="multiple"{% endif %}>
+        {%- if placeholder is not none -%}
+            <option value=""{% if required and value is empty %} selected="selected"{% endif %}>{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}</option>
+        {%- endif -%}
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <option disabled="disabled">{{ separator }}</option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('choice_widget_options') -}}
+    </select>
+
+    <md-select ng-cloak ng-model="{{ ng_model }}" ng-init="{{ ng_init }}"{% if multiple %} multiple{% endif %}{% if placeholder is not none %}placeholder="{{ placeholder != '' ? placeholder|trans({}, translation_domain) }}"{% endif %}>
+        {%- if preferred_choices|length > 0 -%}
+            {% set options = preferred_choices %}
+            {{- block('md_choice_widget_options') -}}
+            {%- if choices|length > 0 and separator is not none -%}
+                <md-option disabled>{{ separator }}</md-option>
+            {%- endif -%}
+        {%- endif -%}
+        {%- set options = choices -%}
+        {{- block('md_choice_widget_options') -}}
+    </md-select>
+{%- endblock choice_widget_collapsed -%}
+
+{%- block md_choice_widget_options -%}
+    {% for group_label, choice in options %}
+        {%- if choice is iterable -%}
+            <md-optgroup label="{{ choice_translation_domain is same as(false) ? group_label : group_label|trans({}, choice_translation_domain) }}">
+                {% set options = choice %}
+                {{- block('md_choice_widget_options') -}}
+            </md-optgroup>
+        {%- else -%}
+            {% set attr = choice.attr %}
+            <md-option value="{{ choice.value }}" {{ block('attributes') }}{% if choice is selectedchoice(value) %} ng-selected="true"{% endif %}>{{ choice_translation_domain is same as(false) ? choice.label : choice.label|trans({}, choice_translation_domain) }}</md-option>
+        {%- endif -%}
+    {% endfor %}
+{%- endblock md_choice_widget_options -%}
+
+{%- block datetime_widget -%}
+    {% if widget == 'single_text' %}
+        {{- block('form_widget_simple') -}}
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            <div flex>
+                {{- form_widget(form.date) -}}
+                {{- form_errors(form.date) -}}
+            </div>
+            <div flex>
+                {{- form_widget(form.time) -}}
+                {{- form_errors(form.time) -}}
+            </div>
+        </div>
+    {%- endif -%}
+{%- endblock datetime_widget -%}
+
+{%- block date_widget -%}
+    {%- if widget == 'single_text' -%}
+        {% set ng_model = form.vars.full_name|replace({'[': '.', ']': ''}) %}
+        {% set attr = attr|merge({'ng-model': ng_model}) %}
+        <md-datepicker {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" ng-init="{{ ng_model }}='{{ value }}'" {% endif %}></md-datepicker>
+        <div ng-messages="{{ model_name }}.$error" role="alert" multiple>
+            <div ng-message="required" class="{{ model_name|replace('.', '-') }}-error">This field is required.</div>
+            <div ng-message="valid">The entered value is not a date!</div>
+            <div ng-message="mindate">Date is too early!</div>
+            <div ng-message="maxdate">Date is too late!</div>
+        </div>
+    {%- else -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{- date_pattern|replace({
+                '{{ year }}':  form_widget(form.year, {attr: form.year.vars.attr|merge({'class': 'flex'})}),
+                '{{ month }}': form_widget(form.month, {attr: form.month.vars.attr|merge({'class': 'flex'})}),
+                '{{ day }}':   form_widget(form.day, {attr: form.day.vars.attr|merge({'class': 'flex'})})
+            })|raw -}}
+        </div>
+    {%- endif -%}
+{%- endblock date_widget -%}
+
+{%- block time_widget -%}
+    {%- if widget == 'single_text' -%}
+        {{ block('form_widget_simple') }}
+    {%- else -%}
+        {%- set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} -%}
+        <div {{ block('widget_container_attributes') }}>
+            {{ form_widget(form.hour, vars|merge({'attr': {'class': 'flex'}})) }}{% if with_minutes %}:{{ form_widget(form.minute, vars|merge({'attr': {'class': 'flex'}})) }}{% endif %}{% if with_seconds %}:{{ form_widget(form.second, vars|merge({'attr': {'class': 'flex'}})) }}{% endif %}
+        </div>
+    {%- endif -%}
+{%- endblock time_widget -%}
+
+{%- block button_widget -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+            '%name%': name,
+            '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <md-button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</md-button>
+{%- endblock button_widget -%}
+
+{%- block form_start -%}
+    {% set method = method|upper %}
+    {%- if method in ["GET", "POST"] -%}
+        {% set form_method = method %}
+    {%- else -%}
+        {% set form_method = "POST" %}
+    {%- endif -%}
+<form name="{{ name }}" method="{{ form_method|lower }}" action="{{ action }}" ng-controller="sfFormController as frmCtrl" flex{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {%- if form_method != method -%}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {%- endif -%}
+{%- endblock form_start -%}
+
+{% block form_row %}
+    <md-input-container class="md-block">
+        {% set ng_model = form.vars.full_name|replace({'[': '.', ']': ''}) %}
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        <div ng-messages="{{ ng_model }}.$error" role="alert" multiple>
+            {% if required %}
+                <div ng-message="required" class="{{ ng_model|replace('.', '-') }}-required">This field is required.</div>
+            {% endif %}
+            {{- form_errors(form) -}}
+        </div>
+        {%- if form.vars.description is defined %}
+            <p class="md-caption">{{ form.vars.description }}</p>
+        {% endif -%}
+    </md-input-container>
+{% endblock %}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- for error in errors -%}
+            <div>{{ error.message }}</div>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endblock form_errors -%}

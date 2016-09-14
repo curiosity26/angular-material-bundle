@@ -1,0 +1,23 @@
+{
+  "name": "curiosity26/angular-material-bundle",
+  "description": "A bundle to integrate Angular Material to Symfony's Forms and Asset Management",
+  "require": {
+    "symfony/symfony": "^3.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^5.5"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alex Boyce",
+      "email": "curiosity26@gmail.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "Curiosity26\\AngularMaterialBundle\\": ""
+    }
+  }
+}
