@@ -28,20 +28,50 @@ Install the bundle the usual way:
     }
 ..
 
+Dump The Assets
+---------------
+
+Symfony 2.x
+
+.. code-block:: bash
+    php app/console assetic:dump
+..
+
+Symfony 3.x
+
+.. code-block:: bash
+    php bin/console assetic:dump
+..
+
+Install the Assets
+------------------
+
+Symfony 2.x
+
+.. code-block:: bash
+    php app/console assets:install --symlink
+..
+
+Symfony 3.x
+
+.. code-block:: bash
+    php bin/console assets:install --symlink
+..
+
 Wire-Up JavaScript
 ------------------
 
 .. code-block:: twig
     {% block javascripts %}
         <!-- Wire-Up the Angular assets -->
-        <script src="{{ asset('bundles/curiosity26/angularmaterialbundle/components/angular/angular.min.js') }}"></script>
-        <script src="{{ asset('bundles/curiosity26/angularmaterialbundle/components/angular-animate/angular-animate.min.js') }}"></script>
-        <script src="{{ asset('bundles/curiosity26/angularmaterialbundle/components/angular-aria/angular-aria.min.js') }}"></script>
-        <script src="{{ asset('bundles/curiosity26/angularmaterialbundle/components/angular-messages/angular-messages.min.js') }}"></script>
-        <script src="{{ asset('bundles/curiosity26/angularmaterialbundle/components/angular-material/angular-material.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular/angular.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-animate/angular-animate.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-aria/angular-aria.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-messages/angular-messages.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-material/angular-material.min.js') }}"></script>
 
         <!-- Wire-up the Symfony Form Angular Controller -->
-        <script src="{{ asset('bundles/curiosity26/angularmaterialbundle/js/mdform.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/js/mdform.js') }}"></script>
 
         // ... The rest of your scripts here
     {% endblock %}
@@ -52,7 +82,7 @@ Wire-Up Material Stylesheets
 
 .. code-block:: twig
     {% block stylesheets %}
-        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/curiosity26/angularmaterialbundle/components/angular-material/angular-material.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/curiosity26angularmaterial/components/angular-material/angular-material.min.css') }}">
         // ... Other stylesheets here
     {% endblock %}
 ..
@@ -65,7 +95,7 @@ Wire-Up the Form Template
     twig:
         # ...
         form:
-            resources: ['@AngularMaterialBundle/Resources/Form/material_1_layout.html.twig']
+            resources: ['@Curiosity26AngularMaterialBundle/Resources/Form/material_1_layout.html.twig']
 ..
 
 Create Your Angular App
