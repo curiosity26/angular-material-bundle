@@ -167,7 +167,7 @@ The `sf-alert` directive is an **element directive** to display toast alerts. Al
 ### Attributes
 
 | Attribute | Definition |
---
+--- | ---
 | sf-alert-action | The text as it appears on the action button |
 | sf-alert-position | The position of the alert using any combination of 'top, right, bottom, left, end, start' |
 | sf-alert-auto-wrap | Automatically wrap the contents of the Toast message. *Defaults to true* |
@@ -222,7 +222,7 @@ The `$http` service is used to make the request call and load the response. The 
 ### Attributes
 
 | Attribute | Definition |
---
+--- | ---
 | href, ng-href | The URL to load in the dialog |
 | sf-dialog-method | The HTTP Method used for the request |
 | sf-dialog-data | Sets the `data` attribute for the `$http` service |
