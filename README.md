@@ -114,6 +114,16 @@ Create an Angular app and include the `symfony.mdForm` as a dependency. This wil
     ;
 ```
 
+If you want to use the [Bundled Addons](#bundled-addons), include the addons module:
+
+```JavaScript
+    angular.module('myApp', ['symfony.mdForm', 'symfony.mdAddons'])
+        .controller('MainCtrl', function($scope) {
+            // ...
+        })
+    ;
+```
+
 Connect Your App and Controllers in Templates
 ---------------------------------------------
 
