@@ -16,7 +16,7 @@ angular.module('symfony.mdAddons', ['ngMaterial'])
                 toast.hideDelay(attr['sfAlertHideDelay'] || 0);
                 toast.parent(!!attr['sfAlertParent'] ? $document[0].querySelector(attr['sfAlertParent'])[0] : $document[0].body);
                 toast.textContent(element.text());
-                toast._options.autoWrap(attr['sfAlertAutoWrap'] == undefined ? true : attr['sfAlertAutoWrap']);
+                toast._options.autoWrap = attr['sfAlertAutoWrap'] == undefined ? true : attr['sfAlertAutoWrap'];
                 // Doing the following safely injects the HTML without opening up to XSS vulnerabilities
                 toast._options.template ='<md-toast md-theme="{{ toast.theme }}" ng-class="{\'md-capsule\': toast.capsule}">' +
                     '  <div class="md-toast-content">' +
