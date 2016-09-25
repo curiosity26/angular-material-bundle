@@ -74,7 +74,7 @@ Wire-Up JavaScript
         <script src="{{ asset('bundles/curiosity26angularmaterial/js/mdform.js') }}"></script>
         
         <!-- Wire-up the Symfony Angular Addons -->
-        <script src="{{ asset('bundles/curiosity26angularmaterial/js/mdform.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/js/mdaddons.js') }}"></script>
 
         // ... The rest of your scripts here
     {% endblock %}
