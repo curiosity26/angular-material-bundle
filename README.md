@@ -193,7 +193,7 @@ When the directive is applied to an existing `a` or `md-button` element, the URL
 and rendered using the `$mdDialog` service.
 
 The `$http` service is used to make the request call and load the response. The `sf-dialog` directive overrides the 
-`$http` service to pass the request header `X-Requested-With: XMLHttpRequest` in order to allow smarty to use 
+`$http` service to pass the request header `X-Requested-With: XMLHttpRequest` in order to allow twig to use 
 `{% app.request.isXmlHttpRequest() %}`.
 
 ```twig
