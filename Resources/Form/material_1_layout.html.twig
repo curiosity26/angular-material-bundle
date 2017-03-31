@@ -54,11 +54,13 @@
 
 {%- block choice_widget_expanded -%}
     {%- set ng_model = full_name|replace({'[': '.', ']': ''}) -%}
+    {% with {form: form, ng_model: ng_model} %}
     {% if multiple %}
-        {{ block('checkbox_group', {form: form, ng_model: ng_model}) }}
+        {{ block('checkbox_group') }}
     {% else %}
-        {{ block('radio_group', {form: form, ng_model: ng_model}) }}
+        {{ block('radio_group') }}
     {% endif %}
+    {% endwith %}
 {%- endblock choice_widget_expanded -%}
 
 {% block checkbox_group %}
