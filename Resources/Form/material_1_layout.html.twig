@@ -17,7 +17,7 @@
     {{- form_widget(form) -}}
     <div ng-messages="{{ ng_model }}.$error" role="alert" multiple>
         {% if required %}
-            <div ng-message="required" class="{{ ng_model|replace('.', '-') }}-required">This field is required.</div>
+            <div ng-message="required" class="{{ ng_model|replace({'.': '-'}) }}-required">This field is required.</div>
         {% endif %}
         {{- form_errors(form) -}}
     </div>
@@ -180,7 +180,7 @@
         {% set attr = attr|merge({'ng-model': ng_model}) %}
         <md-datepicker {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" ng-init="{{ ng_model }}='{{ value }}'" {% endif %}></md-datepicker>
         <div ng-messages="{{ model_name }}.$error" role="alert" multiple>
-            <div ng-message="required" class="{{ model_name|replace('.', '-') }}-error">This field is required.</div>
+            <div ng-message="required" class="{{ model_name|replace({'.': '-'}) }}-error">This field is required.</div>
             <div ng-message="valid">The entered value is not a date!</div>
             <div ng-message="mindate">Date is too early!</div>
             <div ng-message="maxdate">Date is too late!</div>
@@ -241,7 +241,7 @@
         {{- form_widget(form) -}}
         <div ng-messages="{{ ng_model }}.$error" role="alert" multiple>
             {% if required %}
-                <div ng-message="required" class="{{ ng_model|replace('.', '-') }}-required">This field is required.</div>
+                <div ng-message="required" class="{{ ng_model|replace({'.': '-'}) }}-required">This field is required.</div>
             {% endif %}
             {{- form_errors(form) -}}
         </div>
