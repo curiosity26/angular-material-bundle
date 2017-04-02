@@ -23,9 +23,10 @@
         <whitelist>
             <directory>./</directory>
             <exclude>
-                <directory>./config</directory>
-                <directory>./Controller</directory>
+                <directory>./vendor</directory>
+                <directory>./DependencyInjection</directory>
                 <directory>./Resources</directory>
+                <directory>./Tests</directory>
             </exclude>
         </whitelist>
     </filter>

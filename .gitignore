@@ -1,7 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### Composer template
 composer.phar
-composer.lock
+/composer.lock
 /vendor/
 
 # Commit your application's lock file http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file
@@ -53,6 +53,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
-phpunit.xml
+/phpunit.xml
 /Tests/logs/
 /Tests/cache/
