@@ -1,0 +1,19 @@
+test_text:
+    path: '/test/text'
+    defaults:
+        _controller: 'Curiosity26AngularMaterialBundle:Test:text'
+
+test_radio:
+    path: '/test/radio'
+    defaults:
+        _controller: 'Curiosity26AngularMaterialBundle:Test:radio'
+
+test_checkbox:
+    path: '/test/checkbox'
+    defaults:
+        _controller: 'Curiosity26AngularMaterialBundle:Test:checkbox'
+
+test_select:
+    path: '/test/select'
+    defaults:
+        _controller: 'Curiosity26AngularMaterialBundle:Test:select'
