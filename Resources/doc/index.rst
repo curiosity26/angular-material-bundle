@@ -90,12 +90,24 @@ Wire-Up Material Stylesheets
 Wire-Up the Form Template
 -------------------------
 
+Symfony 2.x
+
 .. code-block:: yaml
     # Twig Configuration
     twig:
         # ...
         form:
             resources: ['@Curiosity26AngularMaterialBundle/Resources/Form/material_1_layout.html.twig']
+..
+
+Symfony 3.x
+
+.. code-block:: yaml
+    # Twig Configuration
+    twig:
+        # ...
+        form_themes:
+            - '@Curiosity26AngularMaterialBundle/Resources/Form/material_1_layout.html.twig'
 ..
 
 Create Your Angular App
