@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/curiosity26angularmaterial/components/angular-material/angular-material.min.css') }}">
+    </head>
+    <body ng-app="app">
+        {{ form(form) }}
+        <!-- Wire-Up the Angular assets -->
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular/angular.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-animate/angular-animate.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-aria/angular-aria.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-messages/angular-messages.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/components/angular-material/angular-material.min.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/js/mdform.js') }}"></script>
+        <script src="{{ asset('bundles/curiosity26angularmaterial/js/mdaddons.js') }}"></script>
+        <script type="text/javascript">
+            (function() {
+                angular.module('app', ['symfony.mdForm', 'symfony.mdAddons']);
+            })();
+        </script>
+    </body>
+</html>

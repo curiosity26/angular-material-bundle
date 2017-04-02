@@ -55,19 +55,20 @@
 {%- block choice_widget_expanded -%}
     {%- set ng_model = full_name|replace({'[': '.', ']': ''}) -%}
     {% if multiple %}
-        {{ block('checkbox_group', {form: form, ng_model: ng_model}) }}
+        <md-checkbox-group {{ block('widget_container_attributes') }} layout="column">
+            {%- for child in form %}
+                {{- form_widget(child, {ng_model: ng_model}) -}}
+            {% endfor -%}
+        </md-checkbox-group>
     {% else %}
-        {{ block('radio_group', {form: form, ng_model: ng_model}) }}
+        {%- set ng_model = full_name|replace({'[': '.', ']': ''}) -%}
+        <md-radio-group {{ block('widget_container_attributes') }} layout="column">
+            {%- for child in form %}
+                {{- form_widget(child, {form: form, ng_model: ng_model}) -}}
+            {% endfor -%}
+        </md-radio-group>
     {% endif %}
 {%- endblock choice_widget_expanded -%}
-
-{% block checkbox_group %}
-    <md-checkbox-group {{ block('widget_container_attributes') }} layout="column">
-        {%- for child in form %}
-            {{- form_widget(child, {ng_model: ng_model}) -}}
-        {% endfor -%}
-    </md-checkbox-group>
-{% endblock %}
 
 {%- block checkbox_widget -%}
     {%- set model_name = ng_model ?: full_name|replace({'[': '.', ']': ''}) -%}
@@ -76,18 +77,9 @@
         <span hide>
             <input type="checkbox" {% if ng_model is defined %}ng-checked="isChecked({{ ng_model }}, {{ ng_value }})" ng-click="{{ ng_model }} = toggleCheckbox({{ ng_model }}, {{ ng_value }})"{% else %}ng-model="{{ model_name }}"{% endif %} {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
         </span>
-        {{- form_label(form) -}}
+        {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
     </md-checkbox>
 {%- endblock checkbox_widget -%}
-
-{% block radio_group %}
-    {%- set ng_model = full_name|replace({'[': '.', ']': ''}) -%}
-    <md-radio-group {{ block('widget_container_attributes') }} layout="column">
-        {%- for child in form %}
-            {{- form_widget(child, {form: form, ng_model: ng_model}) -}}
-        {% endfor -%}
-    </md-radio-group>
-{% endblock radio_group %}
 
 {%- block radio_widget -%}
     {%- set ng_value = value matches '/^\\d+$/' ? value : "'" ~ value|replace({"'": "\\'"}) ~ "'" -%}
@@ -98,7 +90,7 @@
         <span hide>
             <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %} ng-checked="isRadioSelected({{ ng_model }}, {{ ng_value }})">
         </span>
-        {{- form_label(form) -}}
+        {{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}
     </md-radio-button>
 {%- endblock radio_widget -%}
 
